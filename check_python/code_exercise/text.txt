@@ -1,0 +1,5 @@
+下面我按“从零开始、尽量不踩坑”的标准流程带你做 XSS 攻击实验。我会以你上传的实验手册和课件里的环境为准：
+1）Web 服务器容器 IP 是 10.9.0.5，MySQL 是 10.9.0.6；
+2）需要先在 /etc/hosts 配置域名；
+3）实验平台用的是 Elgg，默认账户包括 samy / seedsamy、alice / seedalice、boby / seedboby 等；
+4）实验任务包括弹窗型 XSS、Cookie 显示、窃取 Cookie、加好友、修改 Profile、自传播蠕虫。
