@@ -88,8 +88,18 @@ class ReActAgent:
                 observation = f"错误:未找到名为 '{tool_name}' 的工具。"
             else:
                 observation = tool_function(tool_input) # 调用真实工具
+                
+            print(f"👀 观察: {observation}")
+            
+            # 将本轮的Action和Observation添加到历史记录中
+            self.history.append(f"Action: {action}")
+            self.history.append(f"Observation: {observation}")
 
-    def _parser_output(self, text: str):
+        # 循环结束
+        print("已达到最大步数，流程终止。")
+        return None
+
+    def _parse_output(self, text: str):
         """解析LLM的输出，提取Thought和Action。
         """
         # (?=\nAction:|$) 匹配到 下一行的Action前面 或文本末尾$ 为止
@@ -108,3 +118,14 @@ class ReActAgent:
         if match:
             return match.group(1), match.group(2)
         return None, None
+
+if __name__ == "__main__":
+    llm = HelloAgentsLLM()
+    tool_executor = ToolExecutor()
+    
+    search_desc = "一个网页搜索引擎。当你需要回答关于时事、事实以及在你的知识库中找不到的信息时，应使用此工具。"
+    tool_executor.registerTool("Search", search_desc, search)
+    
+    agent = ReActAgent(llm_client=llm, tool_executor=tool_executor)
+    question = "2026年4月发生什么大事了?"
+    agent.run(question)
